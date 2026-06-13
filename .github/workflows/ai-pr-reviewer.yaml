@@ -1,0 +1,32 @@
+name: IA Code Reviewer
+
+on:
+  pull_request:
+    types: [opened, synchronize]
+
+jobs:
+  review:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: write
+
+    steps:
+      - name: Descargar el codigo
+        uses: actions/checkout@v4
+
+      - name: Ejecutar revision de IA
+        # Esta accion lee de forma nativa la clave de OpenAI
+        uses: coderabbitai/ai-pr-reviewer@main
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+        with:
+          debug: false
+          review_simple_changes: true
+          # Instrucciones en español para el modelo de OpenAI
+          system_message: |
+            Actua como un ingeniero de software senior. 
+            Revisa los cambios de este Pull Request y responde en espanol. 
+            Se conciso. Identifica errores, problemas de seguridad o malas practicas. 
+            Si encuentras algo mejorable, sugiere el codigo corregido.

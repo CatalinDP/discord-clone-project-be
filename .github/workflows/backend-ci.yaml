@@ -1,0 +1,32 @@
+name: Backend CI
+
+on:
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Descargar codigo
+      uses: actions/checkout@v4
+
+    - name: Configurar Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: 20
+
+    - name: Instalar pnpm
+      uses: pnpm/action-setup@v3
+      with:
+        version: 11
+
+    - name: Instalar dependencias
+      run: pnpm install
+
+    - name: Validar Linter y Prettier
+      run: pnpm run lint
+
+    - name: Verificar compilacion de TypeScript
+      run: pnpm run build

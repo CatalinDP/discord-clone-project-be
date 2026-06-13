@@ -1,0 +1,24 @@
+# Dependencias de pnpm
+node_modules
+.pnpm-debug.log*
+
+# Carpetas de compilación de TypeScript
+dist/
+build/
+
+# Variables de entorno secretas
+.env
+.env.production
+.env.development
+
+# Logs de errores de Node
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Archivos del sistema y editores
+.DS_Store
+.vscode/
+.idea/
