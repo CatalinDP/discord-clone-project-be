@@ -1,8 +1,8 @@
-import js from '@eslint/js'
-import globals from 'globals'
-import tseslint from 'typescript-eslint'
-import prettierConfig from 'eslint-config-prettier'
-import prettierPlugin from 'eslint-plugin-prettier'
+import js from '@eslint/js';
+import globals from 'globals';
+import tseslint from 'typescript-eslint';
+import prettierConfig from 'eslint-config-prettier';
+import prettierPlugin from 'eslint-plugin-prettier';
 
 export default tseslint.config(
   { ignores: ['dist', 'node_modules'] },
@@ -17,13 +17,21 @@ export default tseslint.config(
       },
     },
     plugins: {
-      'prettier': prettierPlugin,
+      prettier: prettierPlugin,
     },
     rules: {
-      'prettier/prettier': 'error',
-      '@typescript-eslint/no-explicit-any': 'warn', // Avisa si usan "any" en TypeScript
-      'no-console': 'off', // Permite usar console.log en el backend
+      // Configuramos Prettier dentro de ESLint para que sea más permisivo con tu entorno
+      'prettier/prettier': [
+        'error',
+        {
+          endOfLine: 'auto', // 1. Ignora si el salto de línea es de Windows (CRLF) o Mac/Linux (LF)
+          trailingComma: 'es5', // 2. Solo exige comas al final donde JavaScript viejo lo permita (evita líos en arrays/objetos)
+          singleQuote: true, // 3. (Opcional) Te obliga a usar comillas simples, muy común en backend
+        },
+      ],
+      '@typescript-eslint/no-explicit-any': 'warn',
+      'no-console': 'off',
     },
   },
-  prettierConfig
-)
+  prettierConfig,
+);
