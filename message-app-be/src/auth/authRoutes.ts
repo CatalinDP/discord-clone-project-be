@@ -4,9 +4,9 @@ import { Router, Response } from 'express';
 import { UserRequest } from '../middlewares/authMiddleware';
 import { supabase } from '../config/supabase';
 
-authRouter = Router();
+const authRouter = Router();
 
-export const loginHandler = async (req: UserRequest, res: Response) => {
+const loginHandler = async (req: UserRequest, res: Response) => {
   const { identifier, password } = req.body;
 
   if (!identifier || !password) {
