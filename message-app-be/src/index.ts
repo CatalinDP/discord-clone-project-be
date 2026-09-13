@@ -21,17 +21,17 @@ app.get('/api/health', (req, res) => {
   });
 });
 
-// Arrancar el servidor
-app.listen(PORT, () => {
-  console.log(`[server]: Servidor backend corriendo en http://localhost:${PORT}`);
-});
-
 /// Auth --
-app.post('/api/auth/', authRouter);
+app.use('/api/auth/', authRouter);
 
 app.get('/api/home', protectRoute, (req: UserRequest, res: express.Response) => {
   res.json({
     message: `El token es: ${req.user?.email}`,
     id: req.user?.id,
   });
+});
+
+// Arrancar el servidor
+app.listen(PORT, () => {
+  console.log(`[server]: Servidor backend corriendo en http://localhost:${PORT}`);
 });

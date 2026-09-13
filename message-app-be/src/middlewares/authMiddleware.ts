@@ -12,6 +12,10 @@ export const protectRoute = (req: UserRequest, res: Response, next: NextFunction
     return res.status(401).json({ error: 'Access restricted. Token is empty' });
   }
   const verifiedUser = verifyToken(token);
+
+  if (!verifiedUser) {
+    return res.status(401).json({ error: 'Invalid or expired token' });
+  }
   req.user = verifiedUser;
   next();
 };

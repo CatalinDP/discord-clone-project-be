@@ -1,6 +1,10 @@
 import jwt, { SignOptions, JwtPayload } from 'jsonwebtoken';
 
-const JWT_SECRET = process.env.JWT_SECRET || 'default_secret_key';
+const JWT_SECRET = process.env.JWT_SECRET;
+
+if (!JWT_SECRET) {
+  throw new Error('Missing JWT_SECRET environment variable');
+}
 
 interface UserPayload {
   id: number;
@@ -14,7 +18,7 @@ export const generateToken = (user: UserPayload): string => {
   return jwt.sign(user, JWT_SECRET, options);
 };
 
-export const verifyToken = (token: string): JwtPayload | null => {
+export const verifyToken = (token: string): { id: number; email: string }  | null => {
   try {
     const verified = jwt.verify(token, JWT_SECRET) as JwtPayload & UserPayload;
     return {
