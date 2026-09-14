@@ -21,11 +21,6 @@ app.get('/api/health', (req, res) => {
   });
 });
 
-// Arrancar el servidor
-app.listen(PORT, () => {
-  console.log(`[server]: Servidor backend corriendo en http://localhost:${PORT}`);
-});
-
 /// Auth --
 app.use('/api/auth/', authRouter);
 
@@ -36,6 +31,7 @@ app.get('/api/home', protectRoute, (req: UserRequest, res: express.Response) => 
   });
 });
 
+// Arrancar el servidor
 app.listen(PORT, () => {
   console.log(`[server]: Servidor backend corriendo en http://localhost:${PORT}`);
 });
