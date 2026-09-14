@@ -13,19 +13,30 @@ const loginHandler = async (req: UserRequest, res: Response) => {
     return res.status(400).json({ error: 'Name and Password are required' });
   }
 
-  const { data: user, error } = await supabase
+  const { data: userByEmail } = await supabase
+  .from('users')
+  .select('*')
+  .eq('email', identifier)
+  .maybeSingle();
+
+  const { data: userByName } = await supabase
     .from('users')
     .select('*')
-    .or(`email.eq.${identifier}, name.eq.${identifier}`)
-    .single();
+    .eq('name', identifier)
+    .maybeSingle();
 
-  if (error || !user) {
+  const user = userByEmail || userByName;
+  if (!user) {
+    return res.status(400).json({ error: 'Credentials are not correct' });
+  }
+
+  if (!user) {
     return res.status(400).json({ error: 'Cretendials are not correct' });
   }
 
   const isPasswordCorrect = await bcrypt.compare(password, user.password);
 
-  if (error || !isPasswordCorrect) {
+  if (!isPasswordCorrect) {
     return res.status(400).json({ error: 'Cretendials are not correct' });
   }
 
@@ -39,7 +50,7 @@ const loginHandler = async (req: UserRequest, res: Response) => {
     token: token,
     user: {
       id: user.id,
-      nombre: user.name,
+      name: user.name,
       email: user.email,
     },
   });
