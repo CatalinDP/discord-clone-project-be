@@ -67,7 +67,7 @@ const registerHandler = async (req: UserRequest, res: Response) => {
     }
 
     if(!newUser) {
-      return 
+      return res.status(400).json({ error: "There was an issue while creating account" });
     }
 
     const token = generateToken({
